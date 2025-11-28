@@ -10,9 +10,7 @@ import java.net.URI;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class URITypeAdapterTest {
 

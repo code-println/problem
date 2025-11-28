@@ -7,7 +7,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.AllArgsConstructor;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.StatusType;
@@ -19,9 +18,7 @@ import java.util.Map;
 import static com.google.gson.internal.bind.TypeAdapters.STRING;
 import static com.google.gson.internal.bind.TypeAdapters.URI;
 import static java.util.Arrays.stream;
-import static lombok.AccessLevel.PRIVATE;
 
-@AllArgsConstructor(access = PRIVATE)
 final class DefaultProblemAdapter extends TypeAdapter<ThrowableProblem> {
 
     private final Gson gson;
@@ -30,6 +27,14 @@ final class DefaultProblemAdapter extends TypeAdapter<ThrowableProblem> {
     private final TypeAdapter<Map<String, Object>> parameters;
     private final TypeAdapter<StatusType> status;
     private final TypeAdapter<ThrowableProblem> cause;
+
+    private DefaultProblemAdapter(Gson gson, boolean stackTraces, TypeAdapter<Map<String, Object>> parameters, TypeAdapter<StatusType> status, TypeAdapter<ThrowableProblem> cause) {
+        this.gson = gson;
+        this.stackTraces = stackTraces;
+        this.parameters = parameters;
+        this.status = status;
+        this.cause = cause;
+    }
 
     DefaultProblemAdapter(final Gson gson, final boolean stackTraces) {
         this(

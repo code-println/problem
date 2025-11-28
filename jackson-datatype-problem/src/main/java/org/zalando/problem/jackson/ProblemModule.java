@@ -5,11 +5,7 @@ import com.fasterxml.jackson.core.util.VersionUtil;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apiguardian.api.API;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Exceptional;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.*;
 
 import java.util.Collections;
 import java.util.HashMap;
