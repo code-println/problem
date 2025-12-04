@@ -39,9 +39,8 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <junit-jupiter.version>5.8.2</junit-jupiter.version>
+        <java.version>17</java.version>
+        <junit-jupiter.version>5.14.1</junit-jupiter.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -54,33 +53,15 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.1</version>
+                <version>3.52.0</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.26</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- 
-                Only needed because lombok has a weird dependency to it.
-                https://medium.com/@Leejjon_net/youll-have-this-problems-when-you-add-lombok-to-a-modular-java-11-micro-service-832f55911bc5
-            -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>1.5.3.Final</version>
-                <scope>provided</scope>
-            </dependency>
-
             <!-- Modules -->
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>problem</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <!-- Testing -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -97,19 +78,19 @@
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
-                <version>2.2</version>
+                <version>3.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-nop</artifactId>
-                <version>1.7.36</version>
+                <version>2.0.17</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.hobsoft.hamcrest</groupId>
                 <artifactId>hamcrest-compose</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -121,13 +102,13 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>4.4.0</version>
+                <version>5.20.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path-assert</artifactId>
-                <version>2.7.0</version>
+                <version>2.10.0</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -152,15 +133,6 @@
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-        </dependency>
-
         <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -193,7 +165,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.6.2</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -207,6 +179,23 @@
                             </configuration>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>12.1.9</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <suppressionFiles>
+                            <suppressionFile>cve-suppressions.xml</suppressionFile>
+                        </suppressionFiles>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
@@ -234,74 +223,36 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.2.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.moditect</groupId>
-                    <artifactId>moditect-maven-plugin</artifactId>
-                    <version>1.0.0.RC2</version>
-                    <!-- 
-                        This plugin provides most of the heavy lifting to support Java 9+,
-                        until we move away from Java 8 (in favor of 11 or a newer LTS).
-
-                        The plugin does:
-                          - generate Java 9 compatible module-info.class (without a 2- or 3-pass compile step)
-                          - put module-info.class within META-INF/versions/9 (Multi-Release JAR),
-                            to maximize backwards compatibility with Java 8
-
-                        The plugin doesn't:
-                          - detect split package situations
-                          - warn about typos in package names
-
-                        Once we move to Java 9 (or higher) we should get rid of this plugin.
-                    -->
-                    <executions>
-                        <execution>
-                            <id>add-module-infos</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>add-module-info</goal>
-                            </goals>
-                            <configuration>
-                                <jvmVersion>9</jvmVersion>
-                                <module>
-                                    <moduleInfoFile>${project.build.sourceDirectory}/module-info.java</moduleInfoFile>
-                                </module>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
-                    <!-- TODO compile once with Java 9 to check modules -->
+                    <version>3.14.1</version>
                     <configuration>
-                        <compilerArgs>
-                            <compilerArg>-Xlint:unchecked,deprecation</compilerArg>
-                            <compilerArg>-Werror</compilerArg>
-                            <compilerArg>-parameters</compilerArg>
-                        </compilerArgs>
-                        <excludes>
-                            <exclude>module-info.java</exclude>
-                        </excludes>
+                        <showWarnings>true</showWarnings>
+                        <showDeprecation>true</showDeprecation>
+                        <release>${java.version}</release>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>3.5.4</version>
                     <configuration>
                         <parallel>classesAndMethods</parallel>
                         <threadCount>1</threadCount>
                         <perCoreThreadCount>true</perCoreThreadCount>
                         <useFile>false</useFile>
+                        <argLine>
+                            --add-opens java.base/java.lang=ALL-UNNAMED
+                        </argLine>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.8</version>
+                    <version>0.8.14</version>
                     <executions>
                         <execution>
                             <id>prepare-agent</id>
@@ -343,26 +294,9 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.eluder.coveralls</groupId>
-                    <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.3.0</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>javax.xml.bind</groupId>
-                            <artifactId>jaxb-api</artifactId>
-                            <version>2.3.1</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.glassfish.jaxb</groupId>
-                            <artifactId>jaxb-runtime</artifactId>
-                            <version>3.0.2</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.18.0</version>
+                    <version>2.20.1</version>
                     <configuration>
                         <generateBackupPoms>false</generateBackupPoms>
                     </configuration>
@@ -370,7 +304,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <version>3.5.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -380,12 +314,12 @@
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.basepom.maven</groupId>
-                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -405,7 +339,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
+                        <version>3.3.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -418,7 +352,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.5.0</version>
+                        <version>3.12.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -434,7 +368,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.2.8</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -448,7 +382,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.8.0</version>
+                        <version>0.9.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>

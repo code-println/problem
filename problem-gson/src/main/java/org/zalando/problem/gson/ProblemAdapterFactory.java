@@ -1,22 +1,13 @@
 package org.zalando.problem.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
+import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.AllArgsConstructor;
 import org.apiguardian.api.API;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
-import org.zalando.problem.ThrowableProblem;
+import org.zalando.problem.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
-import static lombok.AccessLevel.PRIVATE;
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 import static org.zalando.problem.gson.URITypeAdapter.TYPE;
 
@@ -39,6 +29,12 @@ public final class ProblemAdapterFactory implements TypeAdapterFactory {
     private final boolean stackTraces;
     private final Map<URI, TypeToken<? extends Problem>> subtypes;
     private final StatusTypeAdapter statusAdapter;
+
+    private ProblemAdapterFactory(boolean stackTraces, Map<URI, TypeToken<? extends Problem>> subtypes, StatusTypeAdapter statusAdapter) {
+        this.stackTraces = stackTraces;
+        this.subtypes = subtypes;
+        this.statusAdapter = statusAdapter;
+    }
 
     public ProblemAdapterFactory() {
         this(Status.class);
@@ -128,12 +124,17 @@ public final class ProblemAdapterFactory implements TypeAdapterFactory {
         return new ProblemTypeAdapter<T>(gson, type).nullSafe();
     }
 
-    @AllArgsConstructor(access = PRIVATE)
     private final class ProblemTypeAdapter<T> extends TypeAdapter<T> {
 
         private final Gson gson;
         private final TypeToken<T> type;
         private final TypeAdapter<ThrowableProblem> defaultAdapter;
+
+        private ProblemTypeAdapter(Gson gson, TypeToken<T> type, TypeAdapter<ThrowableProblem> defaultAdapter) {
+            this.gson = gson;
+            this.type = type;
+            this.defaultAdapter = defaultAdapter;
+        }
 
         ProblemTypeAdapter(final Gson gson, final TypeToken<T> type) {
             this(gson, type, new DefaultProblemAdapter(gson, stackTraces));

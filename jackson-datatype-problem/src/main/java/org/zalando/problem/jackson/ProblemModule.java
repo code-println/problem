@@ -1,15 +1,10 @@
 package org.zalando.problem.jackson;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.core.util.VersionUtil;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apiguardian.api.API;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Exceptional;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.*;
+import tools.jackson.core.Version;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +13,7 @@ import java.util.Map;
 import static org.apiguardian.api.API.Status.STABLE;
 
 @API(status = STABLE)
-public final class ProblemModule extends Module {
+public final class ProblemModule extends JacksonModule {
 
     private final boolean stackTraces;
     private final Map<Integer, StatusType> statuses;
@@ -60,8 +55,7 @@ public final class ProblemModule extends Module {
     @SuppressWarnings("deprecation")
     @Override
     public Version version() {
-        return VersionUtil.mavenVersionFor(ProblemModule.class.getClassLoader(),
-                "org.zalando", "jackson-datatype-problem");
+         return new Version(0, 28, 0, "SNAPSHOT", "org.zalando", "jackson-datatype-problem");
     }
 
     @Override

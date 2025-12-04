@@ -25,7 +25,7 @@ It's decoupled from any JSON library, but contains a separate module for Jackson
 
 ## Dependencies
 
-- Java 8
+- Java 17
 - Any build tool using Maven Central, or direct download
 - Jackson (optional)
 - Gson (optional)
@@ -50,19 +50,6 @@ Add the following dependency to your project:
     <artifactId>problem-gson</artifactId>
     <version>${problem.version}</version>
 </dependency>
-```
-
-### Java Modules
-
-Even though the minimum requirement is still Java 8, all modules are Java 9 compatible:
-
-```java
-module org.example {
-    requires org.zalando.problem;
-    // pick needed dependencies
-    requires org.zalando.problem.jackson;
-    requires org.zalando.problem.gson;
-}
 ```
 
 ## Configuration

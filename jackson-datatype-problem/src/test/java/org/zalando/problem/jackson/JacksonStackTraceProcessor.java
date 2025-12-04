@@ -18,9 +18,10 @@ public final class JacksonStackTraceProcessor implements StackTraceProcessor {
         return elements.stream()
                 .filter(startsWith(
                         "sun.reflect", 
-                        "java.lang.reflect", 
+                        "java.lang.reflect",
+                        "java.lang.invoke",
                         "jdk.internal.reflect",
-                        "com.fasterxml.jackson").negate())
+                        "tools.jackson").negate())
                 .findFirst()
                 .map(elements::indexOf)
                 .map(subList(elements))
