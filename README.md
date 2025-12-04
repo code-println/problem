@@ -1,3 +1,7 @@
+# Same But Diffenent
+
+This is the same Problem 0.28.0-SNAPSHOT but with Java 17 and Jackson 3. The modules do not work, so they are deleted. It passes the tests.
+
 # Problem
 
 [![Bubble Gum on Shoe](docs/bubble-gum.jpg)](https://pixabay.com/en/bubble-gum-shoes-glue-dirt-438404/)
