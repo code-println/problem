@@ -1,4 +1,4 @@
-# Same But Diffenent
+# Same But Different
 
 This is the same Problem 0.28.0-SNAPSHOT but with Java 17 and Jackson 3. The modules do not work, so they are deleted. It passes the tests.
 
@@ -9,10 +9,7 @@ This is the same Problem 0.28.0-SNAPSHOT but with Java 17 and Jackson 3. The mod
 [![Stability: Sustained](https://masterminds.github.io/stability/sustained.svg)](https://masterminds.github.io/stability/sustained.html)
 ![Build Status](https://github.com/zalando/problem/workflows/build/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/problem/main.svg)](https://coveralls.io/r/zalando/problem)
-[![Code Quality](https://img.shields.io/codacy/grade/fff557c57a9345d1afba5cc234cfbbd7/main.svg)](https://www.codacy.com/app/whiskeysierra/problem)
 [![Javadoc](http://javadoc.io/badge/org.zalando/problem.svg)](http://www.javadoc.io/doc/org.zalando/problem)
-[![Release](https://img.shields.io/github/release/zalando/problem.svg)](https://github.com/zalando/problem/releases)
-[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/problem.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/problem)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/problem/main/LICENSE)
 
 > **Problem** noun, /ˈpɹɒbləm/: A difficulty that has to be resolved or dealt with.
